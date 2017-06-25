@@ -1,0 +1,49 @@
+<!-- 配置,configuration上的属性debug为true时表示打印出logback内部的记录信息，scan表示扫描，隔段时间会进行文件扫描，如果配置文件被
+更改就会重新加载配置信息，默认情况下每隔一分钟进行一次。
+如果想改变这个间隔时间可以设置这个scanPeriod，比如：scanPeriod="30 seconds"，单位有milliseconds、seconds、minutes 和 hours。
+如果没有指明单位，那么默认为毫秒
+ -->
+<configuration scan="true" debug="false">
+	
+	<!-- 定义一个变量 -->
+	<property name="contextName" value="logback" />
+	
+	<if condition="properties('contextName').contains('logback')">
+		<then>
+		
+		</then>
+		
+		<else>
+		
+		</else>
+		
+	</if>
+	
+	<property file="D:/spring20170509/logback_start_003/src/main/resources/variable.properties" />
+	
+	<property resource="variable2.properties" />
+	
+	<!-- 使用${variable}获取变量的值，如果配置文件中没有声明，那么就会到系统变量中查找java -DcontextName=logback -->
+	<contextName>${contextName}</contextName>
+	<!-- 如果aKey不存在，那么使用默认值golden -->
+	<!-- <contextName>${aKey:-golden}</contextName> -->
+	<!-- <contextName>${HOSTNNAME}</contextName> -->
+	<!-- 注册状态监听器 -->
+	<!-- <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" /> -->
+	
+	<statusListener class="com.logback.statusListener.MyStatusListener" />
+
+	<!-- 追加器，用于定义将日志打印到何处和格式化日志信息 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36}- %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- 定义根记录的日志级别 -->
+	<root level="debug">
+		<!-- 定义要引用哪个追加器 -->
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>

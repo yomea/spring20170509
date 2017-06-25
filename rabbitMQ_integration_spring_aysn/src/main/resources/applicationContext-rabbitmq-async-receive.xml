@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+ <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<!-- 标准配置 -->
+				<value>classpath*:application.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+    <!-- 创建connectionFactory -->
+    <bean id="rabbitConnectionFactory"
+      class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+	    <constructor-arg value="${rabbit.hosts}"/>
+	    <property name="username" value="${rabbit.username}"/>
+	    <property name="password" value="${rabbit.password}"/>
+	    <property name="virtualHost" value="${rabbit.virtualHost}"/>
+	    <property name="channelCacheSize" value="5"/>
+	</bean>
+	
+	<!-- 声明消息转换器为SimpleMessageConverter(exchange) -->  
+    <bean id="messageConverter"  
+        class="org.springframework.amqp.support.converter.SimpleMessageConverter">  
+    </bean>  
+    <!-- 监听生产者发送的消息开始 -->  
+    <!-- 用于接收消息的处理类 -->  
+    <bean id="receiveHandler"  
+        class="com.rabbitMQ_integration_spring_aysn.ReceiveMsgHandler">  
+    </bean>  
+    <!-- 用于消息的监听的代理类MessageListenerAdapter -->  
+    <bean id="receiveListenerAdapter"  
+        class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">  
+        <constructor-arg ref="receiveHandler" />  
+        <!-- 默认的监听方法 -->
+        <property name="defaultListenerMethod" value="handleMessage"></property>  
+        <!-- 转发器 -->
+        <property name="messageConverter" ref="messageConverter"></property>  
+    </bean>  
+    <!-- 用于消息的监听的容器类SimpleMessageListenerContainer，对于queueName的值一定要与定义的Queue的值相同 -->  
+    <bean id="listenerContainer"  
+        class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">  
+        <property name="queueNames" value="${rabbit.queue}"></property> 
+        <property name="connectionFactory" ref="rabbitConnectionFactory"></property>  
+        <property name="messageListener" ref="receiveListenerAdapter"></property>  
+    </bean>  
+    <!-- 监听生产者发送的消息结束 -->  
+
+</beans>

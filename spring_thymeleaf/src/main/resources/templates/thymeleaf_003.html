@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8" />
+<title>thymeleaf test</title>
+</head>
+
+
+<body>
+	
+	<!-- 
+		<p> 
+			&copy; 2016
+		</p>
+	
+		<footer> 
+			&copy; 2016
+		</footer> 
+		-->
+	<!-- 将fragment文件中的片段名为copy的标签片段内容包含到p标签中 -->
+	<p th:include="fragment :: copy"></p>
+	<!-- 将fragment文件中的片段名为copy的标签片段替换掉这个p标签 -->
+	<p th:replace="fragment :: copy"></p>
+	
+	<p data-th-text="${#dates.format(new java.util.Date(), 'dd/MMM/yyyy HH:mm')}"></p>
+	
+	<!-- 局部变量,只在当前的标签内可以使用-->
+	<p th:with="isYou=${user}">
+		<p th:text="${isYou}"></p>
+	</p>
+	
+	<!-- 将fragment文件中的片段名为copy的标签片段内容包含到p标签中 -->
+	<p th:include="fragment :: #header"></p>
+	<!-- 将fragment文件中的片段名为copy的标签片段替换掉这个p标签 -->
+	<p th:replace="fragment :: #header"></p>
+	
+</body>
+</html>

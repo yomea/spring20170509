@@ -1,0 +1,37 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		  xmlns:h="http://java.sun.com/jsf/html"
+		  xmlns:f="http://java.sun.com/jsf/core"
+		  xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Your Title Here</title>
+	<link href="./css/styles.css" rel="stylesheet" type="text/css" />
+</h:head>
+<h:body>
+	<h1 class="title">Your Heading Here</h1>
+
+
+	<h:form>
+		<h:panelGrid columns="2" styleClass="formTable">
+First Name:
+<h:panelGroup>
+				<h:inputText id="test" value="#{registrationBean.firstName}"
+					required="true" requiredMessage="Must input firstName"
+					converterMessage="Converter error"
+					validatorMessage="Count must be greater than 0" />
+				<h:message for="test" styleClass="error" />
+			</h:panelGroup>
+Last Name:
+<h:inputText value="#{registrationBean.lastName}" />
+Email Address:
+<h:inputText value="#{registrationBean.emailAddress}" />
+		</h:panelGrid>
+		<h:commandButton value="Register"
+			action="#{registrationBean.doRegistration}" />
+
+	</h:form>
+
+</h:body>
+</html>

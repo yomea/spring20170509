@@ -1,0 +1,21 @@
+<!-- 配置,configuration上的属性debug为true时表示打印出logback内部的记录信息，scan表示扫描，隔段时间会进行文件扫描，如果配置文件被
+更改就会重新加载配置信息，默认情况下每隔一分钟进行一次。
+如果想改变这个间隔时间可以设置这个scanPeriod，比如：scanPeriod="30 seconds"，单位有milliseconds、seconds、minutes 和 hours。
+如果没有指明单位，那么默认为毫秒
+ -->
+<configuration scan="true" debug="false">
+	<!-- 追加器，用于定义将日志打印到何处和格式化日志信息 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}
+				- %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- 定义根记录的日志级别 -->
+	<root level="debug">
+		<!-- 定义要引用哪个追加器 -->
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>

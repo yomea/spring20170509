@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8" />
+<link href="@{/css/thymeleaf_001.css}" type="text/css" rel="stylesheet" />
+<title>Insert title here</title>
+</head>
+
+
+<body>
+	<div id="box">
+		通过ＯＧＮＬ表达式获取值${}
+		<input type='text'  name="username" th:value="${user.username}"/>
+		<!-- #{}取国际化内容 -->
+		获取国际化信息#{}
+		<p th:text="#{hello.welcome}">Welcome to our grocery store!</p>
+		<!-- 或者使用HTML5支持的data-*属性 -->
+		<p data-th-text="#{hello.welcome}">Welcome to our grocery store!</p>
+	</div>
+	 <div style="color:red;">
+		<p>${x} will return a variable x stored into the Thymeleaf context or as a request attribute.</p>
+		<p>${param.x} will return a request parameter called x (which might be multivalued).</p>
+		<p>${session.x} will return a session attribute called x .</p>
+		<p>${application.x} will return a servlet context attribute called x .</p>
+	</div>
+	<p th:utext="#{haha}">Welcome to our grocery store!</p>
+	thymeleaf输出字符串
+	<p th:utext="'welcome Beijing'">Welcome to our grocery store!</p>
+	thymeleaf输出常量
+	<p th:utext="23">Welcome to our grocery store!</p>
+	如果没有特殊字符，比如空格，可以直接写，否则需要加上单引号
+	<p th:utext="one">Welcome to our grocery store!</p>
+	<p th:utext="'welcome to out grocery store' + '951645267${user.username}'">Welcome to our grocery store!</p>
+	
+	<b style="color:red;">使用占位符的国际化，使用圆括号包围，第几个圆括号就表示第几个占位符</b>
+	
+	<p th:utext="#{hehe(${user.username})}">Welcome to our grocery store!</p>
+	
+	<p th:utext="${session.user.username}" style="color:red;">Welcome to our grocery store!</p>
+	
+	<p th:utext="#{${zhanweifu}(${session.user.username})}">Welcome to our grocery store!</p>
+	
+	<p th:utext="${'34'}">Welcome to our grocery store!</p>
+	
+	<span style="color:red;">${user.toString()}</span>
+	<p th:text="${user.toString()}"></p>
+	
+	<span style="color:red;">${user['username']}</span>
+	<p th:text="${user['username']}"></p>
+	
+	<p th:text="'user.toString()'"></p>
+	
+	<span style="color:red;">${#ctx}//the context object</span>
+	<p th:text="${#ctx}"></p>
+	
+	<!-- <span style="color:red;">${#vars}//the context variables.</span> -->
+	<!-- <p th:text="${#vars}"></p> -->
+	
+	<span style="color:red;">${#locale}//the context locale.</span>
+	<p th:text="${#locale.country}"></p>
+	
+	<span style="color:red;">${#request}// (only in Web Contexts) the HttpServletRequest object</span>
+	<p th:text="${#request}"></p>
+	
+	<span style="color:red;">#response : (only in Web Contexts) the HttpServletResponse object.</span>
+	<p th:text="${#response}"></p>
+	
+	<span style="color:red;">#session : (only in Web Contexts) the HttpSession object.</span>
+	<p th:text="${#session}"></p>
+	
+	
+	<span style="color:red;">#servletContext : (only in Web Contexts) the ServletContext object.</span>
+	<p th:text="${#servletContext}"></p>
+	
+	<span style="color:red;">#execInfo : information about the template being processed.</span>
+	<p th:text="${#execInfo}"></p>
+	
+	<span style="color:red;">#messages : methods for obtaining externalized messages inside variables expressions, in the same way as they would
+be obtained using #{…} syntax.</span>
+	<p th:text="${#messages}"></p>
+	
+	
+	<span style="color:red;">#strings : String对象，一个助手类</span>
+	<p th:text="${#strings.startsWith('helloworld', 'hello')}"></p>
+	
+	<span style="color:red;">th:object="${user}</span>
+	<p th:object="${user}">
+		<span th:text="*{username}"></span>
+	</p>
+	
+================================================================	
+	
+<div style="color:red;">
+Simple expressions:<br />
+	Variable Expressions: ${...}<br />
+	Selection Variable Expressions: *{...}<br />
+	Message Expressions: #{...}<br />
+	Link URL Expressions: @{...}<br />
+	Fragment Expressions: ~{...}<br />
+Literals<br />
+	Text literals: 'one text' , 'Another one!' ,…<br />
+	Number literals: 0 , 34 , 3.0 , 12.3 ,…<br />
+	Boolean literals: true , false<br />
+Null literal: null<br />
+Literal tokens: one , sometext , main ,…<br />
+Text operations:<br />
+	String concatenation: +<br />
+	Literal substitutions: |The name is ${name}|<br />
+Arithmetic operations:<br />
+	Binary operators: + , - , * , / , %<br />
+	Minus sign (unary operator): -<br />
+Boolean operations:<br />
+	Binary operators: and , or<br />
+	Boolean negation (unary operator): ! , not<br />
+Comparisons and equality:<br />
+	Comparators: > , &lt; , >= ,  &lt;= ( gt , lt , ge , le )<br />
+	Equality operators: == , != ( eq , ne )<br />
+Conditional operators:<br />
+	If-then: (if) ? (then)<br />
+	If-then-else: (if) ? (then) : (else)<br />
+	Default: (value) ?: (defaultvalue)<br />
+Special tokens:<br />
+	Page 17 of 104<br />
+No-Operation: _<br />
+
+All these features can be combined and nested:<br />
+'User is of type ' + (${user.isAdmin()} ? 'Administrator' : (${user.type} ?: 'Unknown'))<br />
+	
+</div>
+	
+	<p th:text="true and false"></p>
+	
+</body>
+</html>

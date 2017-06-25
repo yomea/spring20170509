@@ -1,0 +1,12 @@
+server:
+          port: 8080
+          context-path: /springBoot
+
+spring:
+           thymeleaf:
+                           cache: false
+
+           messages:
+                           basename: messages
+                           cache-seconds: 0
+                           encoding: utf-8

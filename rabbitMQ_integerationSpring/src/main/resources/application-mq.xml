@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/rabbit
+    	http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:property-placeholder location="classpath:rabbitmq-config.properties" />
+    
+    <context:component-scan base-package="com.rabbitMQ"></context:component-scan>
+	
+	<bean id="queueListenter" class="com.rabbitMQ.listener.QueueListenter"></bean>
+	
+	<rabbit:connection-factory id="connectionFactory"
+		host="${mq.host}"  username="${mq.username}" password="${mq.password}"
+		port="${mq.port}"  virtual-host="${mq.vhost}" />
+		
+	<rabbit:admin id="admin" connection-factory="connectionFactory" />
+
+
+<!-- spring template声明 -->
+	<rabbit:template exchange="test-mq-exchange" id="amqpTemplate"
+		connection-factory="connectionFactory" message-converter="jsonMessageConverter" />
+
+	<!-- 消息对象json转换类 -->
+	<bean id="jsonMessageConverter"
+		class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />
+
+	<rabbit:queue id="test_queue_key" name="test_queue_key"
+		durable="true" auto-delete="false" exclusive="false" />
+
+
+	<rabbit:direct-exchange name="test-mq-exchange"
+		durable="true" auto-delete="false" id="test-mq-exchange">
+		<rabbit:bindings>
+			<rabbit:binding queue="test_queue_key" key="test_queue_key" />
+		</rabbit:bindings>
+	</rabbit:direct-exchange>
+
+	<rabbit:listener-container
+		connection-factory="connectionFactory" acknowledge="auto">
+		<rabbit:listener queues="test_queue_key" ref="queueListenter" />
+	</rabbit:listener-container>
+
+</beans>

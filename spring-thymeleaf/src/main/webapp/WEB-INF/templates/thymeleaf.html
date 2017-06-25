@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><head>
+<meta charset="UTF-8">
+<title>spring thymeleaf Integrating</title>
+</head>
+<body>
+	
+	<p data-th-text="${user}">hello world</p>
+	
+	<p th:text="${session.test.username}"></p>
+	
+	<p th:text="${#request.session}"></p>
+	
+	<p th:text="${#strings.startsWith(str, 'hello')}"></p>
+	
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>username</th>
+		</tr>
+		<tr th:each="user,userStat : ${users}">
+			<td th:text="${user.id}">ID</td>
+			<td th:text="${user.username}">username</td>
+		</tr>
+	
+	</table>
+	
+	
+	<form id="login-form" th:action="@{/login}" th:object="${user}">
+
+		<input type="text" value="" th:field="*{username}"></input>
+		
+
+	</form>
+	
+</body>
+</html>

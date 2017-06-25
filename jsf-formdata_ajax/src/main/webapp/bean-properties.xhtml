@@ -1,0 +1,45 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		  xmlns:h="http://xmlns.jcp.org/jsf/html"
+		  xmlns:f="http://xmlns.jcp.org/jsf/core"
+		  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		  xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Your Title Here</title>
+	<link href="./css/styles.css" rel="stylesheet" type="text/css" />
+
+</h:head>
+<h:body>
+	<h1 class="title">Your Heading Here</h1>
+
+
+	<h:form>
+		<h:panelGrid columns="2" styleClass="formTable">
+First Name:
+<h:panelGroup>
+				<h:inputText id="test" value="#{registrationBean.firstName}"
+					required="true" requiredMessage="Must input firstName"
+					converterMessage="Converter error"
+					validatorMessage="Count must be greater than 0" />
+				<h:message for="test" styleClass="error" id="id-error" />
+			</h:panelGroup>
+Last Name:
+<h:inputText value="#{registrationBean.lastName}" />
+Email Address:
+<h:inputText value="#{registrationBean.emailAddress}" />
+		</h:panelGrid>
+		<h:commandButton value="Register"
+			action="#{registrationBean.doRegistration}" >
+			<!-- 表示使用异步的方式，render表示需要异步输出值得元素，result表示表单验证通过后显示的元素 -->
+			<f:ajax execute="@form" render="id-error result"/>
+			
+			</h:commandButton>
+
+	</h:form>
+<h2 class="ajax-result">
+<h:outputText value="#{registrationBean.emailAddress}" id="result"/>
+</h2>
+</h:body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8" />
+<title>thymeleaf test</title>
+<!-- 一般thymeleaf都是解析属性值，th:*,但是如果需要解析内容的话，那么就需要使用th:inline属性，这个属性有三个值，text，javascript，none-->
+<script type="text/javascript" th:inline="javascript">
+
+/*<![CDATA[*/
+
+	
+	var username = /*[[${session.user.username}]]*/ 'thymeleaf';//如果直接使用浏览器显示，不会报错，直接显示这个值为thymeleaf
+	var size = /*[[${session.test}]]*/ 0;
+	
+	alert(username + size);
+
+/*]]>*/
+ 
+ 
+ /*[+
+	//添加代码	
+ 	var hello = 'hello world!';
+ 	alert(hello + " "  + username);
+  +]*/
+  
+  /*[- */
+	//去掉这个代码，通过thymeleaf解析后，这段代码不会显示在浏览器中
+  	var msg = 'This is a non-working template';
+  /* -]*/
+
+</script>
+</head>
+
+
+<body>
+	<!-- 为了是thymeleaf能够解析p标签内容中的表达式，就需要给这个标签增加一个th:inline属性，并且内容中表达式必须使用两个中括号来包裹 -->
+	<p th:inline="text">your name is [[${user.username}]]</p>
+	
+	
+</body>
+</html>
